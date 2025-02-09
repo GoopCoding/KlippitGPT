@@ -4,14 +4,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KlippitGPT</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<style>
+html, body {
+height: 100%;
+margin: 0;
+overflow: hidden;
+}
+</style>
+<script>
+if (window.top !== window.self) {
+window.top.location = window.self.location;
+}
+</script>
 </head>
 <body class="bg-gray-900 text-white flex justify-center items-center h-screen">
-<div class="w-full max-w-lg bg-gray-800 rounded-lg shadow-lg p-6">
+<div class="w-full h-full flex flex-col items-center justify-center p-4">
+<div class="w-full max-w-2xl bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col h-5/6">
 <h1 class="text-2xl font-bold text-center mb-4">KlippitGPT</h1>
-<div id="chat-box" class="h-80 overflow-y-auto p-2 border border-gray-700 rounded"></div>
+<div id="chat-box" class="flex-1 overflow-y-auto p-2 border border-gray-700 rounded bg-gray-900"></div>
 <div class="mt-4 flex">
 <input id="user-input" type="text" class="flex-1 p-2 rounded-l bg-gray-700 text-white border-none focus:outline-none" placeholder="Ask KlippitGPT...">
 <button onclick="sendMessage()" class="bg-blue-500 p-2 rounded-r hover:bg-blue-600">Send</button>
+</div>
 </div>
 </div>
 <script>
@@ -28,12 +42,12 @@ headers: {
 "Content-Type": "application/json"
 },
 body: JSON.stringify({
-"model": "jamba-1.5-mini",
+"model": "jamba-1.5-",
 "messages": [{"role": "user", "content": userInput}],
 "documents": [],
 "tools": [],
 "n": 1,
-"max_tokens": 2048,
+"max_tokens": 5000,
 "temperature": 0.4,
 "top_p": 1,
 "stop": [],
@@ -41,7 +55,7 @@ body: JSON.stringify({
 })
 });
 let data = await response.json();
-let botReply = data.choices?.[0]?.message?.content || "Error: No response.";
+let botReply = data.choices?.[0]?.message?.content || "Error.";
 chatBox.innerHTML += `<div class='text-left mb-2'><span class='bg-gray-700 px-3 py-1 rounded-lg'>${botReply}</span></div>`;
 chatBox.scrollTop = chatBox.scrollHeight;
 }
